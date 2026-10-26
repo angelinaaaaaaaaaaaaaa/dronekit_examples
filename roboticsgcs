@@ -1,0 +1,71 @@
+import tkinter as tk
+from tkinter import messagebox
+
+
+class DroneControl:
+    def init(self, window):
+        self.window = window
+        self.window.title("GCS Station")
+        self.window.geometry("400x500")
+
+        tk.Label(window, text="Connection String:").pack(pady=6)
+
+        self.connection_input = tk.Entry(window, width=30)
+        self.connection_input.insert(0, "udp:127.0.0.1:14550")
+        self.connection_input.pack(pady=6)
+
+        tk.Button(
+            window,
+            text="Connect",
+            bg="#800020",
+            width=20,
+            command=self.connect
+        ).pack(pady=10)
+
+        tk.Label(window, text="-- Flight Modes --", fg="olive").pack(pady=6)
+
+        flight_modes = ["Guided", "Stabilize", "Loiter", "Land", "RTL"]
+
+        for flight_mode in flight_modes:
+            tk.Button(
+                window,
+                text=flight_mode,
+                width=20,
+                command=lambda selected=flight_mode: self.change_mode(selected)
+            ).pack(pady=3)
+
+        tk.Button(
+            window,
+            text="Arm",
+            bg="#B56E75",
+            width=20,
+            command=self.arm
+        ).pack(pady=10)
+
+        tk.Button(
+            window,
+            text="Close Connection",
+            bg="#3B1720",
+            fg="white",
+            width=20,
+            command=self.disconnect
+        ).pack(pady=10)
+
+    def connect(self):
+        address = self.connection_input.get()
+        messagebox.showinfo("Status", f"Connecting to {address}...")
+
+    def change_mode(self, selected_mode):
+        messagebox.showinfo("Status", f"Mode changed to {selected_mode}")
+
+    def arm(self):
+        messagebox.showwarning("Status", "Drone armed successfully!")
+
+    def disconnect(self):
+        messagebox.showinfo("Status", "Connection closed.")
+
+
+if name == "main":
+    main_window = tk.Tk()
+    application = DroneControl(main_window)
+    main_window.mainloop()
